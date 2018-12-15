@@ -1,0 +1,59 @@
+# Welcome to Serverless!
+
+service: rnd
+package:
+  individually: true
+  exclude:
+    - ./**
+plugins:
+  - serverless-aws-models
+  - serverless-reqvalidator-plugin
+  - serverless-aws-documentation
+  - serverless-iam-roles-per-function
+  - serverless-dynamodb-local
+
+provider:
+  name: aws
+  runtime: python3.7
+  apiName: JavaHomeAdminServerLess
+  description: Building JavaHome Admin App
+
+# you can overwrite defaults here
+#  stage: dev
+  region: ap-south-1
+  environment:
+    myTable: ${self:custom.myTable}                #${self:service}
+  iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - cloudwatchlogs:*
+          - dynamodb:*
+        Resource: "*"
+
+functions:
+  - ${file(student.yml)}
+  - ${file(enrollbatch.yml)}
+  - ${file(addfee.yml)}
+  - ${file(batch.yml)}
+  - ${file(getstudents.yml)}
+custom:
+  myTable: 'JHomeDemoTable'
+  models:
+    JavaHomeAddStudent:
+      ContentType: "application/json"
+      Schema: ${file(models/AddStudent.json)}
+    JavaHomeBatch:
+      ContentType: "application/json"
+      Schema: ${file(models/Batch.json)}
+
+    JavaHomeFee:
+      ContentType: "application/json"
+      Schema: ${file(models/Fee.json)}
+
+    JavaHomeGetStudent:
+      ContentType: "application/json"
+      Schema: ${file(models/getStudent.json)}
+
+resources:
+    - ${file(./resources/onlyBody.yml)}
+    - ${file(./resources/dynamodb.yml)}
