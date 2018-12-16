@@ -1,4 +1,6 @@
 #set($inputRoot = $input.path('$'))
 {
-  "message" : "$util.parseJson($inputRoot).message"
+  "statusCode" : $inputRoot.statusCode,
+  "message" : $inputRoot.message,
+  "body" : $inputRoot.body
 }

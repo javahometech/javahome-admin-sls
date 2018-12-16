@@ -21,8 +21,8 @@ provider:
 # you can overwrite defaults here
 #  stage: dev
   region: ap-south-1
-  environment:
-    myTable: ${self:custom.myTable}                #${self:service}
+  # environment:
+  #   myTable: ${self:custom.myTable}                #${self:service}
   iamRoleStatements:
       - Effect: "Allow"
         Action:
@@ -35,9 +35,10 @@ functions:
   - ${file(enrollbatch.yml)}
   - ${file(addfee.yml)}
   - ${file(batch.yml)}
-  - ${file(getstudents.yml)}
+  - ${file(lambda/course/course.yml)}
 custom:
-  myTable: 'JHomeDemoTable'
+  studentsTable: 'javahome_students'
+  courseTable: 'javahome_courses'
   models:
     JavaHomeAddStudent:
       ContentType: "application/json"

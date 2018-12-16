@@ -3,7 +3,7 @@
     javahomestudents:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.myTable}
+        TableName: ${self:custom.studentsTable}
         AttributeDefinitions:
           - AttributeName: year
             AttributeType: S
@@ -14,6 +14,20 @@
             KeyType: HASH
           - AttributeName: time_stamp
             KeyType: RANGE
+        # Set the capacity based on the stage
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+    javahomecourses:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.courseTable}
+        AttributeDefinitions:
+          - AttributeName: course_id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: course_id
+            KeyType: HASH
         # Set the capacity based on the stage
         ProvisionedThroughput:
           ReadCapacityUnits: 5

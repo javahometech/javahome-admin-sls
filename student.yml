@@ -1,4 +1,4 @@
-student:
+addstudent:
   handler: student/add_students.add
   versionFunctions: false
   name: JHadminAddStudent
@@ -35,3 +35,36 @@ student:
   tags:
     App: JHAdmin
     Location: Banglore
+
+getstudents:
+      handler: student/get_students.add
+      versionFunctions: false
+      name: JHadminGetStudent
+      package:
+        include:
+          - student/get_students.py
+      environment:
+        TABLE_NAME: javahome_students
+      events:
+        - http:
+            method: get
+            path: student
+            integration: lambda
+            reqValidatorName: onlyBody
+            request:
+              template:
+                application/json: ''
+            response:
+              headers:
+              template: $input.path('$')
+              statusCodes:
+                  200:
+                      pattern: '' # Default response method
+                  500:
+                      pattern: '.*"statusCode":.*500.*' # JSON response
+                      template: ${file(templates/500.jsonx)}
+                      headers:
+                        Content-Type: "'application/json'"
+      tags:
+        App: JHAdmin
+        Location: Banglore
