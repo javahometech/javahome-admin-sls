@@ -1,17 +1,20 @@
-course:
-  handler: lambda/course/courses.meta_info
+addfee:
+  handler: lambda/student/add_fee.add
   versionFunctions: false
-  name: JHCourses
+  name: JHadminAddFee
   package:
     include:
-      - lambda/course/courses.py
+      - lambda/student/add_fee.py
   environment:
-    TABLE_NAME: javahome_courses
+    TABLE_NAME: ${self:custom.studentsTable}
   events:
     - http:
-        method: get
-        path: courses/meta
+        method: post
+        path: addfee
         integration: lambda
+        reqValidatorName: onlyBody
+        requestModels:
+          "application/json": "JavaHomeFee"
         request:
           template:
             application/json: ''

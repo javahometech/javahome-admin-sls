@@ -22,7 +22,7 @@ provider:
 #  stage: dev
   region: ap-south-1
   # environment:
-  #   myTable: ${self:custom.myTable}                #${self:service}
+  #   myTable: ${self:custom.myTable}
   iamRoleStatements:
       - Effect: "Allow"
         Action:
@@ -31,29 +31,30 @@ provider:
         Resource: "*"
 
 functions:
-  - ${file(student.yml)}
-  - ${file(enrollbatch.yml)}
-  - ${file(addfee.yml)}
-  - ${file(batch.yml)}
-  - ${file(lambda/course/course.yml)}
+  - ${file(lambda/student/student.yml)}
+  - ${file(lambda/student/enrollbatch.yml)}
+  - ${file(lambda/student/addfee.yml)}
+  - ${file(lambda/batch/batch.yml)}
+  - ${file(lambda/courses/course.yml)}
 custom:
   studentsTable: 'javahome_students'
+  batchTable: 'javahome_batchs'
   courseTable: 'javahome_courses'
   models:
     JavaHomeAddStudent:
       ContentType: "application/json"
-      Schema: ${file(models/AddStudent.json)}
+      Schema: ${file(lambda/student/models/AddStudent.json)}
     JavaHomeBatch:
       ContentType: "application/json"
-      Schema: ${file(models/Batch.json)}
+      Schema: ${file(lambda/batch/models/Batch.json)}
 
     JavaHomeFee:
       ContentType: "application/json"
-      Schema: ${file(models/Fee.json)}
+      Schema: ${file(lambda/student/models/Fee.json)}
 
     JavaHomeGetStudent:
       ContentType: "application/json"
-      Schema: ${file(models/getStudent.json)}
+      Schema: ${file(lambda/student/models/getStudent.json)}
 
 resources:
     - ${file(./resources/onlyBody.yml)}
