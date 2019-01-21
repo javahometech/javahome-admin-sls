@@ -18,7 +18,21 @@
         ProvisionedThroughput:
           ReadCapacityUnits: 5
           WriteCapacityUnits: 5
-    javahomecourses:
+    javahomebatch:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.batchTable}
+        AttributeDefinitions:
+          - AttributeName: start_date
+            AttributeType: S
+        KeySchema:
+          - AttributeName: start_date
+            KeyType: HASH
+        # Set the capacity based on the stage
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+    javahomecourseContent:
       Type: AWS::DynamoDB::Table
       Properties:
         TableName: ${self:custom.courseTable}
